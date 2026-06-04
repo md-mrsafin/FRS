@@ -1,0 +1,21 @@
+[
+  {
+    "id": 1,
+    "name": "Boeing 787",
+    "price":40000,
+    "from": "Dhaka",
+    "to": "UAE",
+    "date": "12 Jan 2027",
+    "time": "11:00PM"
+  },
+  {
+    "id": 2,
+    "name": "Boeing 470",
+    "price":35000,
+    "from": "America",
+    "to": "UAE",
+    "date": "12 Jan 2027",
+    "time": "11:00PM"
+  }
+
+]
