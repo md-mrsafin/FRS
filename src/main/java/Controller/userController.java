@@ -77,7 +77,63 @@ public class userController implements HttpHandler  {
                 sendingData(exchange,400, response);
 
             }
+            if(method.equals("POST") && path.equals("/user/login")) {
 
+                InputStream inputStream=exchange.getRequestBody();
+                User user=gson.fromJson(new InputStreamReader(inputStream),User.class);
+                try{
+                    User matchUser=new loginRegHandle().handleLogin(user,users);
+                    if(matchUser!=null) {
+                        String response=gson.toJson(matchUser);
+                        sendingData(exchange,200,response);
+                    }
+                    else{
+                        throw new Exception("Email or password is incorrect");
+                    }
+                }
+                catch (Exception e){
+                    String response=gson.toJson(e.getMessage());
+                    sendingData(exchange,400, response);
+
+                }
+
+            }
+            if(method.equals("POST") && path.equals("/user")){
+                InputStream is= exchange.getRequestBody();
+
+                System.out.println(is);
+                User newUser=gson.fromJson(new InputStreamReader(is,StandardCharsets.UTF_8),User.class);
+                User matchUser = null;
+
+                try {
+                    for(User user:users) {
+                        if (user.getEmail().equals(newUser.getEmail())) {
+                            matchUser = user;
+                            break;
+                        }
+                    }
+                    if(matchUser!=null) {
+                        throw new IOException("Already have an account");
+
+                    }
+                    else{
+                        System.out.println(newUser.getName());
+                        new loginRegHandle().handleReg(newUser,users);
+                        String response= gson.toJson(newUser);
+                        sendingData(exchange,200,response);
+                    }
+
+                } catch (IOException e) {
+
+
+                    sendingData(exchange,500,e.getMessage());
+                }
+
+
+            }
+            else{
+                sendingData(exchange,200,"Wrong Request");
+            }
 
         }
 
